@@ -3,8 +3,8 @@
 #include<memory>
 using namespace std;
 
-// Ã°ÅİÅÅĞò
-// ´ÓÎ²µ½Í·£¬Ğ¡µÄÍùÉÏÃ°
+// å†’æ³¡æ’åº
+// ä»å°¾åˆ°å¤´ï¼Œå°çš„å¾€ä¸Šå†’
 void BubbleSort(vector<int>& num) {
 	for (int i = num.size(); i > 0; i--) {
 		for (int j = i; j > 0; j--) {
@@ -16,7 +16,7 @@ void BubbleSort(vector<int>& num) {
 }
 
 
-// Ñ¡ÔñÅÅĞò
+// é€‰æ‹©æ’åº
 void SelectionSort(vector<int>& num) {
 	for (int i = 0; i < num.size(); i++) {
 		int key = i;
@@ -29,7 +29,7 @@ void SelectionSort(vector<int>& num) {
 	}
 }
 
-// ²åÈëÅÅĞò
+// æ’å…¥æ’åº
 void InsertSort(vector<int>& num) {
 	for (int i = 1; i < num.size(); i++) {
 		int key = num[i];
@@ -42,7 +42,7 @@ void InsertSort(vector<int>& num) {
 	}
 }
 
-//	Ï£¶ûÅÅĞò
+//	å¸Œå°”æ’åº
 void ShellSort(vector<int>& num) {
 	int h = 1;
 	int len = num.size();
@@ -59,8 +59,8 @@ void ShellSort(vector<int>& num) {
 	}
  }
 
-//	¹é²¢ÅÅĞò
-//  µİ¹é°æ±¾
+//	å½’å¹¶æ’åº
+//  é€’å½’ç‰ˆæœ¬
 void Merge(vector<int>& num,int front,int mid,int end) {
 	vector<int> LeftSubArray(num.begin() + front, num.begin() + mid + 1);
 	vector<int> RightSubArray(num.begin() + mid+1, num.begin() + end + 1);
@@ -89,8 +89,8 @@ void MergeSort(vector<int>& num, int front, int end) {
 	Merge(num, front, mid, end);
 }
 
-//	·Çµİ¹é°æ±¾
-template<typename T> // Õû”µ»ò¸¡üc”µ½Ô¿ÉÊ¹ÓÃ,ÈôÒªÊ¹ÓÃÎï¼ş(class)•r±ØíšÔO¶¨"Ğ¡ì¶"(<)µÄß\Ëã×Ó¹¦ÄÜ
+//	éé€’å½’ç‰ˆæœ¬
+template<typename T> // æ•´æ•¸æˆ–æµ®é»æ•¸çš†å¯ä½¿ç”¨,è‹¥è¦ä½¿ç”¨ç‰©ä»¶(class)æ™‚å¿…é ˆè¨­å®š"å°æ–¼"(<)çš„é‹ç®—å­åŠŸèƒ½
 void merge_sort(T arr[], int len) {
 	T* a = arr;
 	T* b = new T[len];
@@ -119,7 +119,7 @@ void merge_sort(T arr[], int len) {
 	delete[] b;
 }
 
-//	¿ìÅÅ
+//	å¿«æ’
 int Paritition(vector<int>& num, int low, int high) {
 	int pivot = num[low];
 	while (low < high) {
@@ -143,7 +143,82 @@ void QuickSort(vector<int>& num, int low, int high) {
 	QuickSort(num, pivot + 1, high);
 }
 
+//  	å †æ’åº
+//	å¤§é¡¶å †
+void MaxHeapify(vector<int>& num, int start, int end) {
+	int dad = start;
+	int son = dad * 2 + 1;
+	while (son <= end) {
+		if (son + 1 <= end && num[son] < num[son + 1])
+			son++;
+		if (num[dad] > num[son])
+			return;
+		else {
+			swap(num[dad], num[son]);
+			dad = son;
+			son = dad * 2 + 1;
+		}
+	}
+}
 
+void HeapSort(vector<int>& num) {
+	int len = num.size();
+	//	ç¬¬ä¸€è½®å…ˆæ‰¾å‡ºæœ€å¤§çš„å€¼ï¼Œæ”¾åˆ°æœ€å
+	for (int i = len / 2 - 1; i >= 0; i--)
+		MaxHeapify(num, i, len - 1);
+	//	åç»­å‡ è½®ï¼Œåˆ†åˆ«æŠŠæ‰¾åˆ°çš„æœ€å¤§çš„å€¼ä¾æ¬¡æ”¾åœ¨åé¢ï¼Œä¹Ÿå°±æ˜¯i-1çš„ä½ç½®ï¼Œæœ€ç»ˆå¾—åˆ°ä¸€ä¸ªå‡åºæ’åˆ—
+	for (int i = len - 1; i > 0; i--) {
+		swap(num[0], num[i]);
+		MaxHeapify(num, 0, i - 1);
+	}
+}
+
+//	åŸºæ•°æ’åº
+//	å°šæœªç†è§£
+int Maxbit(vector<int>& num)
+{
+	int n = num.size();
+	int maxData = num[0];
+	for (int i = 1; i < n; ++i) {
+		if (maxData < num[i])
+			maxData = num[i];
+	}
+	int d = 1;
+	int p = 10;
+	while (maxData >= p) {
+		maxData /= 10;
+		++d;
+	}
+	return d;
+}
+
+void RadixSort(vector<int>& num) {
+	int n = num.size();
+	int d = Maxbit(num);
+	vector<int>tmp(n);
+	vector<int>count(10);
+	int i, j, k;
+	int radix = 1;
+	for (int i = 1; i <= d; i++) {
+		for (j = 0; j < 10; j++)
+			count[j] = 0;
+		for (j = 0; j < n; j++) {
+			k = (num[j] / radix) % 10;
+			count[k]++;
+		}
+		for (j = 1; j < 10; j++)
+			count[j] = count[j - 1] + count[j];
+		for (j = n - 1; j >= 0; j--) {
+			k = (num[j] / radix) % 10;
+			tmp[count[k] - 1] = num[j];
+			count[k]--;
+		}
+		for (j = 0; j < n; j++) {
+			num[j] = tmp[j];
+			radix = radix * 10;
+		}
+	}
+}
 
 int main()
 {
